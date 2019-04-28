@@ -7,6 +7,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimpleJwt", "SimpleJwt\Simp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApiDemo", "WebApiDemo\WebApiDemo.csproj", "{EA8D920A-F165-4078-9461-7F99F29F6C32}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xpo.RestDataStoreClient", "XpoDalRestApi\Xpo.RestDataStoreClient.csproj", "{02698D5E-4BFB-4C6A-A997-A940A4B60C73}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xpo.RestDataStore", "Xpo.RestDal\Xpo.RestDataStore.csproj", "{C75000A5-E4BD-4F67-A216-07B7C0698CB0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +25,14 @@ Global
 		{EA8D920A-F165-4078-9461-7F99F29F6C32}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EA8D920A-F165-4078-9461-7F99F29F6C32}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EA8D920A-F165-4078-9461-7F99F29F6C32}.Release|Any CPU.Build.0 = Release|Any CPU
+		{02698D5E-4BFB-4C6A-A997-A940A4B60C73}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{02698D5E-4BFB-4C6A-A997-A940A4B60C73}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{02698D5E-4BFB-4C6A-A997-A940A4B60C73}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{02698D5E-4BFB-4C6A-A997-A940A4B60C73}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C75000A5-E4BD-4F67-A216-07B7C0698CB0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C75000A5-E4BD-4F67-A216-07B7C0698CB0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C75000A5-E4BD-4F67-A216-07B7C0698CB0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C75000A5-E4BD-4F67-A216-07B7C0698CB0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
