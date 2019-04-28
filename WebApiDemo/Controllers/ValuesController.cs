@@ -9,15 +9,15 @@ namespace WebApiDemo.Controllers
     [Route("api/[controller]")]
     [ApiController]
     [Authenticate]
-    public class ValuesController : ControllerBase
+    public class ValuesController : BaseController
     {
         // GET api/values
         [HttpGet]
         public ActionResult<IEnumerable<string>> Get()
         {
-            var User = this.HttpContext.Request.Headers["Token"];
+            var User = this.GetPayload();
             //context.HttpContext.Request.Headers["Token"];
-            return new string[] { "value1", "value2" };
+            return new string[] { "value1", "value2", User.SerializeToJson() };
         }
 
         // GET api/values/5
