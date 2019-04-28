@@ -2,6 +2,7 @@
 using DevExpress.Xpo.Metadata;
 using System;
 using System.Linq;
+using Xpo.RestDataStore;
 
 namespace Xpo.RestDataStoreClient
 {
@@ -13,9 +14,21 @@ namespace Xpo.RestDataStoreClient
             Console.ReadKey();
             XPDictionary dictionary = new ReflectionDictionary();
             dictionary.GetDataStoreSchema(typeof(Program).Assembly);
+
+            ThreadSafeDataLayer UpdateSchemaDal = new ThreadSafeDataLayer(dictionary, new Xpo.RestDataStore.RestApiDataStore("http://localhost:55829/api/DataStore/", DevExpress.Xpo.DB.AutoCreateOption.DatabaseAndSchema));
+
+            UnitOfWork UpdateSchemaUoW = new UnitOfWork(UpdateSchemaDal);
+
+            UpdateSchemaUoW.UpdateSchema();
+            UpdateSchemaUoW.CreateObjectTypeRecords();
+
             SimpleDataLayer Dal = new SimpleDataLayer(dictionary, new Xpo.RestDataStore.RestApiDataStore("http://localhost:55829/api/DataStore/", DevExpress.Xpo.DB.AutoCreateOption.DatabaseAndSchema));
 
+            //XpoDefault.ObjectLayer = new RestObjectLayer(Dal);
             UnitOfWork UoW = new UnitOfWork(Dal);
+
+            UoW.UpdateSchema();
+            UoW.CreateObjectTypeRecords();
 
             Category BestFoodInTheWorld = new Category(UoW) { Code = "001", Name = "Best food in the world" };
 

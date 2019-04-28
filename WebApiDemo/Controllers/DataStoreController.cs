@@ -91,12 +91,19 @@ namespace WebApiDemo.Controllers
 
         [HttpPost]
         [Route("[action]")]
-        public UpdateSchemaResult UpdateSchema([FromHeader]bool dontCreateIfFirstTableNotExist, [FromBody]  DBTable[] tables)
+        public UpdateSchemaResult UpdateSchema()
         {
+            //[FromHeader]bool dontCreateIfFirstTableNotExist, [FromBody]  DBTable[] tables
             UpdateSchemaResult Resut = new UpdateSchemaResult();
             try
             {
-                Resut = _DataStore.UpdateSchema(dontCreateIfFirstTableNotExist, tables);
+                byte[] Bytes = null;
+                Task.Run(async () =>
+                {
+                    Bytes = await Request.GetRawBodyBytesAsync();
+                }).Wait();
+                var Parameters = RestApiDataStore.GetObjectsFromByteArray<MyClass>(Bytes);
+                Resut = _DataStore.UpdateSchema(Parameters.dontCreateIfFirstTableNotExist, Parameters.tables);
             }
             catch (Exception exception)
             {

@@ -1,4 +1,5 @@
-﻿using DevExpress.Xpo;
+﻿using DevExpress.Data.Filtering;
+using DevExpress.Xpo;
 using DevExpress.Xpo.DB;
 using Newtonsoft.Json;
 using RestSharp;
@@ -8,12 +9,34 @@ using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
 using System.Net;
+using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
 using System.Xml;
 using System.Xml.Serialization;
 
 namespace Xpo.RestDataStore
 {
+    [DataContract()]
+    public class MyClass
+    {
+        [DataMember()]
+        public bool dontCreateIfFirstTableNotExist { get; set; }
+
+        [DataMember()]
+        public DBTable[] tables { get; set; }
+
+        public MyClass(bool dontCreateIfFirstTableNotExist, params DBTable[] tables)
+
+        {
+            this.dontCreateIfFirstTableNotExist = dontCreateIfFirstTableNotExist;
+            this.tables = tables;
+        }
+
+        public MyClass()
+        {
+        }
+    }
+
     public class RestApiDataStore : IDataStore
     {
         private readonly string Url;
@@ -138,9 +161,10 @@ namespace Xpo.RestDataStore
             request.Resource = "UpdateSchema";
             request.AddHeader("Postman-Token", "45efa94f-1de9-4b24-bf68-e030a1256c36");
             request.AddHeader("Cache-Control", "no-cache");
-            request.AddHeader("Content-Type", "application/json");
-
-            request.AddParameter("dontCreateIfFirstTableNotExist", dontCreateIfFirstTableNotExist, ParameterType.HttpHeader);
+            request.AddHeader("Content-Type", "application/octet-stream");
+            MyClass data = new MyClass(dontCreateIfFirstTableNotExist, tables);
+            byte[] value = ToByteArray(data);
+            request.AddParameter("Data", value, ParameterType.RequestBody);
             IRestResponse<UpdateSchemaResult> response = client.Execute<UpdateSchemaResult>(request);
 
             return response.Data;
