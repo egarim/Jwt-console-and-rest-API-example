@@ -2,19 +2,28 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Xpo.RestDataStore;
 
 namespace Xpo.RestDataStoreClient
 {
-    public class Product : XPObject
+    public class Product : XPObject, IClientId
     {
         public Product(Session session) : base(session)
         { }
 
+        private string clientId;
         private bool discontinued;
         private Category category;
         private string description;
         private string code;
         private string name;
+
+        [Size(SizeAttribute.DefaultStringMappingFieldSize)]
+        public string ClientId
+        {
+            get => clientId;
+            set => SetPropertyValue(nameof(ClientId), ref clientId, value);
+        }
 
         [Size(SizeAttribute.DefaultStringMappingFieldSize)]
         public string Name

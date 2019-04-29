@@ -11,6 +11,8 @@ namespace WebApiDemo.Controllers
 {
     public class AuthenticateAttribute : ActionFilterAttribute
     {
+        //TODO implement protection https://github.com/cuongle/Hmac.WebApi/blob/master/Hmac.Api/Filters/AuthenticateAttribute.cs
+        //TODO implement protection https://stackoverflow.com/questions/11775594/how-to-secure-an-asp-net-web-api
         public override void OnActionExecuting(ActionExecutingContext context)
         {
             // do something before the action executes

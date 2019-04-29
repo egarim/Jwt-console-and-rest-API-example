@@ -27,6 +27,8 @@ namespace WebApiDemo
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Latest);
 
+            //HACK Xpo asp core extensions https://www.devexpress.com/Support/Center/Question/Details/T637597/asp-net-core-dependency-injection-in-xpo
+
             //HACK https://documentation.devexpress.com/XPO/119377/Getting-Started/Getting-Started-with-NET-Core
             //string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
             //string connectionString = SQLiteConnectionProvider.GetConnectionString(Path.Combine(appDataPath, "myXpoApp.db"));
