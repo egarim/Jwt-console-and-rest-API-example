@@ -12,19 +12,9 @@ namespace Xpo.RestDataStoreClient
         {
             Console.WriteLine("Hello World!");
             Console.ReadKey();
-            XPDictionary dictionary = new ReflectionDictionary();
-            dictionary.GetDataStoreSchema(typeof(Program).Assembly);
-
-            ThreadSafeDataLayer UpdateSchemaDal = new ThreadSafeDataLayer(dictionary, new RestApiDataStore("http://localhost:55829/api/DataStore/", DevExpress.Xpo.DB.AutoCreateOption.DatabaseAndSchema));
-
-            UnitOfWork UpdateSchemaUoW = new UnitOfWork(UpdateSchemaDal);
-
-            UpdateSchemaUoW.UpdateSchema();
-            UpdateSchemaUoW.CreateObjectTypeRecords();
-
-            SimpleDataLayer Dal = new SimpleDataLayer(dictionary, new RestApiDataStore("http://localhost:55829/api/DataStore/", DevExpress.Xpo.DB.AutoCreateOption.DatabaseAndSchema));
-
-            XpoDefault.ObjectLayer = new RestObjectLayer(Dal, "Jose");
+            RestApiDataStoreClient Client = new RestApiDataStoreClient("http://localhost:55829/api/Login", "http://localhost:55829/api/DataStore", typeof(Program).Assembly);
+            Client.Login("Joche", "123");
+            Client.UpdateSchema();
             UnitOfWork UoW = new UnitOfWork();
             //UnitOfWork UoW = new UnitOfWork(Dal);
 

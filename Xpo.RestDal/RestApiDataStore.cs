@@ -13,11 +13,13 @@ namespace Xpo.RestDataStore
     public class RestApiDataStore : IDataStore
     {
         private readonly string Url;
+        private readonly string Token;
 
-        public RestApiDataStore(string Url, AutoCreateOption AutoCreateOption)
+        public RestApiDataStore(string Url, AutoCreateOption AutoCreateOption, string Token = "")
 
         {
             this.Url = Url;
+            this.Token = Token;
             this.AutoCreateOption = AutoCreateOption;
         }
 
@@ -32,13 +34,17 @@ namespace Xpo.RestDataStore
             request.AddHeader("Postman-Token", "45efa94f-1de9-4b24-bf68-e030a1256c36");
             request.AddHeader("Cache-Control", "no-cache");
             request.AddHeader("Content-Type", "application/octet-stream");
-
+            request.AddHeader("Token", Token);
             request.AddParameter("dmlStatements", ToByteArray(dmlStatements), ParameterType.RequestBody);
 
             IRestResponse response = client.Execute(request);
-            var Bytes = JsonConvert.DeserializeObject<Byte[]>(response.Content);
-            var SelectData = GetObjectsFromByteArray<ModificationResult>(Bytes);
-            return SelectData;
+
+            if (response.IsSuccessful)
+            {
+                var Bytes = JsonConvert.DeserializeObject<Byte[]>(response.Content);
+                return GetObjectsFromByteArray<ModificationResult>(Bytes);
+            }
+            throw new Exception($"Error status:{response.StatusCode} Error message:{response.StatusDescription}");
         }
 
         private static byte[] Compress(byte[] raw)
@@ -115,13 +121,17 @@ namespace Xpo.RestDataStore
             request.AddHeader("Postman-Token", "45efa94f-1de9-4b24-bf68-e030a1256c36");
             request.AddHeader("Cache-Control", "no-cache");
             request.AddHeader("Content-Type", "application/octet-stream");
-
+            request.AddHeader("Token", Token);
             request.AddParameter("selects", ToByteArray(selects), ParameterType.RequestBody);
 
             IRestResponse response = client.Execute(request);
-            var Bytes = JsonConvert.DeserializeObject<Byte[]>(response.Content);
-            var SelectData = GetObjectsFromByteArray<SelectedData>(Bytes);
-            return SelectData;
+            if (response.IsSuccessful)
+            {
+                var Bytes = JsonConvert.DeserializeObject<Byte[]>(response.Content);
+                var SelectData = GetObjectsFromByteArray<SelectedData>(Bytes);
+                return SelectData;
+            }
+            throw new Exception($"Error status:{response.StatusCode} Error message:{response.StatusDescription}");
         }
 
         public UpdateSchemaResult UpdateSchema(bool dontCreateIfFirstTableNotExist, params DBTable[] tables)
@@ -135,12 +145,16 @@ namespace Xpo.RestDataStore
             request.AddHeader("Postman-Token", "45efa94f-1de9-4b24-bf68-e030a1256c36");
             request.AddHeader("Cache-Control", "no-cache");
             request.AddHeader("Content-Type", "application/octet-stream");
+            request.AddHeader("Token", Token);
             UpdateSchemaParameters data = new UpdateSchemaParameters(dontCreateIfFirstTableNotExist, tables);
             byte[] value = ToByteArray(data);
             request.AddParameter("Data", value, ParameterType.RequestBody);
             IRestResponse<UpdateSchemaResult> response = client.Execute<UpdateSchemaResult>(request);
-
-            return response.Data;
+            if (response.IsSuccessful)
+            {
+                return response.Data;
+            }
+            throw new Exception($"Error status:{response.StatusCode} Error message:{response.StatusDescription}");
         }
     }
 }

@@ -13,7 +13,8 @@ namespace WebApiDemo.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class DataStoreController : ControllerBase
+    [Authenticate]
+    public class DataStoreController : BaseController
     {
         private IDataStore _DataStore;
 
@@ -24,6 +25,7 @@ namespace WebApiDemo.Controllers
 
         [HttpPost]
         [Route("[action]")]
+
         public async Task<byte[]> SelectData()
         {
             byte[] Bytes = null;

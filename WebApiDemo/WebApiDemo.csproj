@@ -18,4 +18,8 @@
     <ProjectReference Include="..\Xpo.RestDal\Xpo.RestDataStore.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Models\" />
+  </ItemGroup>
+
 </Project>
