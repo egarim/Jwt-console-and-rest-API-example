@@ -24,97 +24,35 @@ namespace WebApiDemo.Controllers
 
         [HttpPost]
         [Route("[action]")]
-        public Byte[] SelectData()
+        public async Task<byte[]> SelectData()
         {
-            try
-            {
-                byte[] Bytes = null;
-                Task.Run(async () =>
-                {
-                    Bytes = await Request.GetRawBodyBytesAsync();
-                }).Wait();
+            byte[] Bytes = null;
 
-                SelectedData SelectedData = _DataStore.SelectData(RestApiDataStore.GetObjectsFromByteArray<SelectStatement[]>(Bytes));
-                return RestApiDataStore.ToByteArray(SelectedData);
-            }
-            catch (Exception exception)
-            {
-                Debug.WriteLine(string.Format("{0}:{1}", "exception.Message", exception.Message));
-                if (exception.InnerException != null)
-                {
-                    Debug.WriteLine(string.Format("{0}:{1}", "exception.InnerException.Message", exception.InnerException.Message));
-                }
-                Debug.WriteLine(string.Format("{0}:{1}", " exception.StackTrace", exception.StackTrace));
-            }
-            return null;
+            Bytes = await Request.GetRawBodyBytesAsync();
+
+            SelectedData SelectedData = _DataStore.SelectData(RestApiDataStore.GetObjectsFromByteArray<SelectStatement[]>(Bytes));
+            return RestApiDataStore.ToByteArray(SelectedData);
         }
 
         [HttpPost]
         [Route("[action]")]
-        public byte[] ModifyData()
+        public async Task<byte[]> ModifyData()
         {
-            try
-            {
-                try
-                {
-                    byte[] Bytes = null;
-                    Task.Run(async () =>
-                    {
-                        Bytes = await Request.GetRawBodyBytesAsync();
-                    }).Wait();
+            byte[] Bytes = null;
+            Bytes = await Request.GetRawBodyBytesAsync();
 
-                    var Result = _DataStore.ModifyData(RestApiDataStore.GetObjectsFromByteArray<ModificationStatement[]>(Bytes));
-                    return RestApiDataStore.ToByteArray(Result);
-                }
-                catch (Exception exception)
-                {
-                    Debug.WriteLine(string.Format("{0}:{1}", "exception.Message", exception.Message));
-                    if (exception.InnerException != null)
-                    {
-                        Debug.WriteLine(string.Format("{0}:{1}", "exception.InnerException.Message", exception.InnerException.Message));
-                    }
-                    Debug.WriteLine(string.Format("{0}:{1}", " exception.StackTrace", exception.StackTrace));
-                }
-                return null;
-            }
-            catch (Exception exception)
-            {
-                Debug.WriteLine(string.Format("{0}:{1}", "exception.Message", exception.Message));
-                if (exception.InnerException != null)
-                {
-                    Debug.WriteLine(string.Format("{0}:{1}", "exception.InnerException.Message", exception.InnerException.Message));
-                }
-                Debug.WriteLine(string.Format("{0}:{1}", " exception.StackTrace", exception.StackTrace));
-            }
-            return null;
+            var Result = _DataStore.ModifyData(RestApiDataStore.GetObjectsFromByteArray<ModificationStatement[]>(Bytes));
+            return RestApiDataStore.ToByteArray(Result);
         }
 
         [HttpPost]
         [Route("[action]")]
-        public UpdateSchemaResult UpdateSchema()
+        public async Task<UpdateSchemaResult> UpdateSchema()
         {
-            //[FromHeader]bool dontCreateIfFirstTableNotExist, [FromBody]  DBTable[] tables
-            UpdateSchemaResult Resut = new UpdateSchemaResult();
-            try
-            {
-                byte[] Bytes = null;
-                Task.Run(async () =>
-                {
-                    Bytes = await Request.GetRawBodyBytesAsync();
-                }).Wait();
-                var Parameters = RestApiDataStore.GetObjectsFromByteArray<MyClass>(Bytes);
-                Resut = _DataStore.UpdateSchema(Parameters.dontCreateIfFirstTableNotExist, Parameters.tables);
-            }
-            catch (Exception exception)
-            {
-                Debug.WriteLine(string.Format("{0}:{1}", "exception.Message", exception.Message));
-                if (exception.InnerException != null)
-                {
-                    Debug.WriteLine(string.Format("{0}:{1}", "exception.InnerException.Message", exception.InnerException.Message));
-                }
-                Debug.WriteLine(string.Format("{0}:{1}", " exception.StackTrace", exception.StackTrace));
-            }
-            return Resut;
+            byte[] Bytes = null;
+            Bytes = await Request.GetRawBodyBytesAsync();
+            var Parameters = RestApiDataStore.GetObjectsFromByteArray<UpdateSchemaParameters>(Bytes);
+            return _DataStore.UpdateSchema(Parameters.dontCreateIfFirstTableNotExist, Parameters.tables);
         }
     }
 }
