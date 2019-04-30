@@ -15,11 +15,8 @@ namespace Xpo.RestDataStoreClient
             RestApiDataStoreClient Client = new RestApiDataStoreClient("http://localhost:55829/api/Login", "http://localhost:55829/api/DataStore", typeof(Program).Assembly);
             Client.Login("Joche", "123");
             Client.UpdateSchema();
-            UnitOfWork UoW = new UnitOfWork();
+            UnitOfWork UoW = Client.CreateNewUnitOfWork();
             //UnitOfWork UoW = new UnitOfWork(Dal);
-
-            UoW.UpdateSchema();
-            UoW.CreateObjectTypeRecords();
 
             if (!UoW.Query<Product>().Any())
             {

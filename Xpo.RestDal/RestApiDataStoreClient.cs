@@ -14,7 +14,11 @@ namespace Xpo.RestDataStore
         public string DataStoreUrl { get; set; }
         public Assembly[] Assemblies { get; set; }
         private XPDictionary dictionary;
+        private SimpleDataLayer dal;
+        private RestObjectLayer objectLayer;
         public LoginResult LoginResult { get; private set; }
+        public SimpleDataLayer Dal { get => dal; set => dal = value; }
+        public RestObjectLayer ObjectLayer { get => objectLayer; set => objectLayer = value; }
 
         public RestApiDataStoreClient(string loginUrl, string dataStoreUrl, params Assembly[] assemblies)
         {
@@ -42,10 +46,15 @@ namespace Xpo.RestDataStore
                 if (response.Data.Authenticated)
                 {
                     this.LoginResult = response.Data;
-                    SimpleDataLayer Dal = new SimpleDataLayer(dictionary, new RestApiDataStore(DataStoreUrl, DevExpress.Xpo.DB.AutoCreateOption.SchemaAlreadyExists, this.LoginResult.Token));
-                    XpoDefault.ObjectLayer = new RestObjectLayer(Dal, Username);
+                    dal = new SimpleDataLayer(dictionary, new RestApiDataStore(DataStoreUrl, DevExpress.Xpo.DB.AutoCreateOption.SchemaAlreadyExists, this.LoginResult.Token));
+                    objectLayer = new RestObjectLayer(dal, Username);
                 }
             }
+        }
+
+        public UnitOfWork CreateNewUnitOfWork()
+        {
+            return new UnitOfWork(ObjectLayer);
         }
 
         public void UpdateSchema()

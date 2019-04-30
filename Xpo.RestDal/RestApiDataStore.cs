@@ -138,8 +138,6 @@ namespace Xpo.RestDataStore
         {
             var client = new RestClient(Url);
 
-            var stringjson = JsonConvert.SerializeObject(tables);
-
             var request = new RestRequest(Method.POST);
             request.Resource = "UpdateSchema";
             request.AddHeader("Postman-Token", "45efa94f-1de9-4b24-bf68-e030a1256c36");
