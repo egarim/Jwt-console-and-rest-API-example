@@ -3,6 +3,7 @@ using System;
 
 namespace Xpo.RestDataStoreClient
 {
+    [Persistent("TestTable_Cat")]
     public class Category : XPObject
     {
         public Category(Session session) : base(session)

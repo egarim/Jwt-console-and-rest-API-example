@@ -22,55 +22,29 @@ namespace WebApiDemo.Controllers
         {
             _DataStore = DataStore;
         }
-        [HttpPost]
-        [Route("[action]")]
 
-        public byte[] GetAutoCreateOptions()
-        {
-            return RestApiDataStore.ToByteArray(_DataStore.AutoCreateOption);
-
-        }
         [HttpPost]
         [Route("[action]")]
 
         public async Task<byte[]> SelectData()
         {
-            try
-            {
-                byte[] Bytes = null;
+            byte[] Bytes = null;
 
-                Bytes = await Request.GetRawBodyBytesAsync();
+            Bytes = await Request.GetRawBodyBytesAsync();
 
-                SelectedData SelectedData = _DataStore.SelectData(RestApiDataStore.GetObjectsFromByteArray<SelectStatement[]>(Bytes));
-                return RestApiDataStore.ToByteArray(SelectedData);
-            }
-            catch (Exception ex)
-            {
-                var test = ex.Message;
-                throw;
-            }
-         
+            SelectedData SelectedData = _DataStore.SelectData(RestApiDataStore.GetObjectsFromByteArray<SelectStatement[]>(Bytes));
+            return RestApiDataStore.ToByteArray(SelectedData);
         }
 
         [HttpPost]
         [Route("[action]")]
         public async Task<byte[]> ModifyData()
         {
-
             byte[] Bytes = null;
-            try
-            {
-                Bytes = await Request.GetRawBodyBytesAsync();
+            Bytes = await Request.GetRawBodyBytesAsync();
 
-                var Result = _DataStore.ModifyData(RestApiDataStore.GetObjectsFromByteArray<ModificationStatement[]>(Bytes));
-                return RestApiDataStore.ToByteArray(Result);
-            }
-            catch (Exception ex)
-            {
-                var test = ex.Message;
-                throw;
-            }
-           
+            var Result = _DataStore.ModifyData(RestApiDataStore.GetObjectsFromByteArray<ModificationStatement[]>(Bytes));
+            return RestApiDataStore.ToByteArray(Result);
         }
 
         [HttpPost]

@@ -6,6 +6,7 @@ using Xpo.RestDataStore;
 
 namespace Xpo.RestDataStoreClient
 {
+    [Persistent("TestTable_Prod")]
     public class Product : XPObject, IClientId
     {
         public Product(Session session) : base(session)

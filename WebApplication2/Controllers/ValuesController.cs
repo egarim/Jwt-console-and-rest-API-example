@@ -44,8 +44,5 @@ namespace WebApiDemo.Controllers
         public void Delete(int id)
         {
         }
-
-          
-        
     }
 }

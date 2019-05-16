@@ -25,6 +25,28 @@ namespace Xpo.RestDataStore
 
         public AutoCreateOption AutoCreateOption { get; private set; }
 
+
+        public AutoCreateOption GetAutoCreateOption()
+        {
+            var client = new RestClient(Url);
+
+            var request = new RestRequest(Method.POST);
+            request.Resource = "GetAutoCreateOptions";
+           
+            request.AddHeader("Cache-Control", "no-cache");
+            request.AddHeader("Content-Type", "application/octet-stream");
+            request.AddHeader("Token", Token);
+            IRestResponse response = client.Execute(request);
+
+            if (response.IsSuccessful)
+            {
+                var Bytes = JsonConvert.DeserializeObject<Byte[]>(response.Content);
+                return GetObjectsFromByteArray<AutoCreateOption>(Bytes);
+            }
+            throw new Exception($"Error: Unable to connect to DB in GetAutoCreateOption method. Error status:{response.StatusCode} Error message:{response.StatusDescription}");
+        }
+
+
         public ModificationResult ModifyData(params ModificationStatement[] dmlStatements)
         {
             var client = new RestClient(Url);
