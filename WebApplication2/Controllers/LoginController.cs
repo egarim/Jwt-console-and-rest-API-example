@@ -17,7 +17,7 @@ namespace WebApiDemo.Controllers
     public class LoginController : ControllerBase
     {
         public const string Key = "JIHHKS304SS1E9SXT2P1OXHN3Y1XHETRVSVB71EPYHR8U6FO2GMKYX4WB3NW0GTZ9BFWORZ1XACHGI26SM5B2J27X89DOSYSY18S0TAKRUWYVXQ2BRDNLR70JI8PRVNE";
-        public const string Issuer = "Jose Manuel Ojeda";
+        public const string Issuer = "Jose Columbie";
 
         [HttpPost]
         [Route("[action]")]

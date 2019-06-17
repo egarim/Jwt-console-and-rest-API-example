@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
@@ -28,7 +29,8 @@ namespace WebApiDemo
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Latest);
+            services.AddMvc(option => option.EnableEndpointRouting = false).SetCompatibilityVersion(CompatibilityVersion.Latest);
+       
 
             //HACK Xpo asp core extensions https://www.devexpress.com/Support/Center/Question/Details/T637597/asp-net-core-dependency-injection-in-xpo
 
@@ -38,7 +40,7 @@ namespace WebApiDemo
             //string connectionString = SQLiteConnectionProvider.GetConnectionString("myXpoApp.db");
             //IDataStore DataStore = SQLiteConnectionProvider.CreateProviderFromConnection(SQLiteConnectionProvider.CreateConnection(@"Data Source=mydb.db"), AutoCreateOption.DatabaseAndSchema);
 
-          
+
             SqlConnectionStringBuilder builder = new SqlConnectionStringBuilder();
             builder.DataSource = "weedware101.database.windows.net,1433";
             builder.UserID = "demodbjose";
@@ -48,9 +50,18 @@ namespace WebApiDemo
             SqlConnection connection = new SqlConnection(builder.ConnectionString);
             connection.Open();
 
+            Dictionary<string, IDataStore> RestDataStores = new Dictionary<string, IDataStore>();
+            
             var SqlServerdataStore = DevExpress.Xpo.DB.MSSqlConnectionProvider.CreateProviderFromConnection(connection, AutoCreateOption.SchemaOnly);
-            services.AddSingleton<IDataStore>(SqlServerdataStore);
 
+            RestDataStores.Add("demodbjose", SqlServerdataStore);
+
+
+            //services.AddSingleton<IDataStore>(SqlServerdataStore);
+
+
+
+            services.AddSingleton<Dictionary<string, IDataStore>>(RestDataStores);
 
             //var SqlServerdataStore = DevExpress.Xpo.DB.MSSqlConnectionProvider.CreateProviderFromString("Initial Catalog=demodbjose; Password=*.mk3247; User ID=demodbjose; Data Source=weedware101.database.windows.net,1433; Persist Security Info=True;", AutoCreateOption.SchemaAlreadyExists, out objects);
 
@@ -58,11 +69,12 @@ namespace WebApiDemo
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                
             }
 
             app.UseMvc();

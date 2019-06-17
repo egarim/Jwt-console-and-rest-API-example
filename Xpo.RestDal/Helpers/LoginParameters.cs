@@ -7,11 +7,15 @@ namespace Xpo.RestDataStore
     {
         public string Username { get; set; }
         public string Password { get; set; }
+        public string Server { get; set; }        
+        public string Database { get; set; }
 
-        public LoginParameters(string username, string password)
+        public LoginParameters(string username, string password, string server, string database)
         {
             Username = username;
             Password = password;
+            Server = server;
+            Database = database;
         }
 
         public LoginParameters()

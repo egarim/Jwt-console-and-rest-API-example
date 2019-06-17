@@ -1,4 +1,5 @@
 ﻿using DevExpress.Xpo.DB;
+using DevExpress.Xpo.Helpers;
 using Newtonsoft.Json;
 using RestSharp;
 using System;
@@ -10,7 +11,7 @@ using System.Xml.Serialization;
 
 namespace Xpo.RestDataStore
 {
-    public class RestApiDataStore : IDataStore
+    public class RestApiDataStore : IDataStore, ICommandChannel
     {
         private readonly string Url;
         private readonly string Token;
@@ -175,6 +176,28 @@ namespace Xpo.RestDataStore
                 return response.Data;
             }
             throw new Exception($"Error status:{response.StatusCode} Error message:{response.StatusDescription}");
+        }
+
+        object ICommandChannel.Do(string command, object args)
+        {
+            var client = new RestClient(Url);
+            DoArgs AllParameter =new DoArgs(command, args);
+            var request = new RestRequest(Method.POST);
+            request.Resource = "Do";
+            request.AddHeader("Postman-Token", "45efa94f-1de9-4b24-bf68-e030a1256c36");
+            request.AddHeader("Cache-Control", "no-cache");
+            request.AddHeader("Content-Type", "application/octet-stream");
+            request.AddHeader("Token", Token);
+            request.AddParameter("args", ToByteArray(AllParameter), ParameterType.RequestBody);
+
+            IRestResponse response = client.Execute(request);
+
+            if (response.IsSuccessful)
+            {
+                var Bytes = JsonConvert.DeserializeObject<Byte[]>(response.Content);
+                return GetObjectsFromByteArray<object>(Bytes);
+            }
+            throw new Exception($"Error in Do method. Error status:{response.StatusCode} Error message:{response.StatusDescription}");
         }
     }
 }

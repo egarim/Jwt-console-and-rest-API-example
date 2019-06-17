@@ -1,4 +1,4 @@
-﻿using System;
+﻿ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -17,7 +17,10 @@ namespace WebApiDemo
         public static void Main(string[] args)
         {
 
-            CreateWebHostBuilder(args).Build().Run();
+            IWebHostBuilder t = CreateWebHostBuilder(args);
+            IWebHost r = t.Build();
+            r.Run();
+
         }
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>

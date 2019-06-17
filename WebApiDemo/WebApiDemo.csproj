@@ -1,7 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.1</TargetFramework>    
+    <TargetFramework>netcoreapp3.0</TargetFramework>
+    <UseWindowsForms>true</UseWindowsForms>
   </PropertyGroup>
 
   <ItemGroup>
@@ -11,14 +12,43 @@
 
 
   <ItemGroup>
+    <PackageReference Include="DevExpress.Reporting.Core" Version="18.2.7" />
     <PackageReference Include="DevExpress.Xpo" Version="18.2.7" />
-    <PackageReference Include="Microsoft.AspNetCore.App" />
-    <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.1.1" PrivateAssets="All" />
+    <PackageReference Include="MySql.Data" Version="8.0.16" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\SimpleJwt\SimpleJwt.csproj" />
     <ProjectReference Include="..\Xpo.RestDal\Xpo.RestDataStore.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="NetStandardModel">
+      <HintPath>D:\Bitbucket\weedware\NetStandardModel\bin\Debug\netstandard2.0\NetStandardModel.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Persistent.Base.v18.2">
+      <HintPath>C:\Program Files (x86)\DevExpress 18.2\Components\Bin\Framework\DevExpress.Persistent.Base.v18.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Persistent.BaseImpl.v18.2">
+      <HintPath>C:\Program Files (x86)\DevExpress 18.2\Components\Bin\Framework\DevExpress.Persistent.BaseImpl.v18.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraReports.v18.2">
+      <HintPath>C:\Program Files (x86)\DevExpress 18.2\Components\Bin\Framework\DevExpress.XtraReports.v18.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress..ExpressApp.Xpo.v18.2">
+      <HintPath>C:\Program Files (x86)\DevExpress 18.2\Components\Bin\Framework\DevExpress.ExpressApp.Xpo.v18.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.ExpressApp.v18.2">
+      <HintPath>C:\Program Files (x86)\DevExpress 18.2\Components\Bin\Framework\DevExpress.ExpressApp.v18.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.ExpressApp.ReportsV2.v18.2">
+      <HintPath>C:\Program Files (x86)\DevExpress 18.2\Components\Bin\Framework\DevExpress.ExpressApp.ReportsV2.v18.2.dll</HintPath>
+    </Reference>
+
+    <Reference Include="DevExpress.XtraReports.v18.2.Web">
+      <HintPath>C:\Program Files (x86)\DevExpress 18.2\Components\Bin\Framework\DevExpress.XtraReports.v18.2.Web.dll</HintPath>
+    </Reference>
+    
   </ItemGroup>
 
 

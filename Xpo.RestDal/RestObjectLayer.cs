@@ -13,6 +13,7 @@ namespace Xpo.RestDataStore
         string ClientId { get; set; }
     }
 
+
     //HACK the base code for this object is here https://www.devexpress.com/Support/Center/Question/Details/Q446637/how-can-i-filter-data-according-user-permission
     public class RestObjectLayer : SimpleObjectLayer, IObjectLayer
     {

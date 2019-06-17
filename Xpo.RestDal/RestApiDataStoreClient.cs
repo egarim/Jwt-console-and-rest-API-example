@@ -21,6 +21,10 @@ namespace Xpo.RestDataStore
         private SimpleDataLayer dal;
         public SimpleDataLayer Dal { get => dal; set => dal = value; }
 
+        private RestApiDataStore restApiDataStore;
+
+        public RestApiDataStore RestApiDataStore { get => restApiDataStore; set => restApiDataStore = value; }
+
         private RestObjectLayer objectLayer;
         public RestObjectLayer ObjectLayer { get => objectLayer; set => objectLayer = value; }
 
@@ -33,7 +37,7 @@ namespace Xpo.RestDataStore
             dictionary.GetDataStoreSchema(Assemblies);
         }
 
-        public void Login(string Username, string Password)
+        public void Login(string Username, string Password, string Server, string Database)
         {
             var client = new RestClient(LoginUrl);
 
@@ -42,7 +46,7 @@ namespace Xpo.RestDataStore
 
             request.AddHeader("Content-Type", "application/octet-stream");
 
-            request.AddParameter("dmlStatements", RestApiDataStore.ToByteArray(new LoginParameters(Username, Password)), ParameterType.RequestBody);
+            request.AddParameter("dmlStatements", RestApiDataStore.ToByteArray(new LoginParameters(Username, Password, Server, Database)), ParameterType.RequestBody);
 
             IRestResponse<LoginResult> response = client.Execute<LoginResult>(request);
             if (response.IsSuccessful)
@@ -50,8 +54,14 @@ namespace Xpo.RestDataStore
                 if (response.Data.Authenticated)
                 {
                     this.LoginResult = response.Data;
-                    dal = new SimpleDataLayer(dictionary, new RestApiDataStore(DataStoreUrl, DevExpress.Xpo.DB.AutoCreateOption.SchemaOnly, this.LoginResult.Token));
-                    objectLayer = new RestObjectLayer(dal, Username);
+                    RestApiDataStore = new RestApiDataStore(DataStoreUrl, DevExpress.Xpo.DB.AutoCreateOption.SchemaOnly, this.LoginResult.Token);
+                    dal = new SimpleDataLayer(dictionary, RestApiDataStore);
+                    //objectLayer = new RestObjectLayer(dal, Username);
+                    //RestApiDataStore provider = new RestApiDataStore(Solution1.Module.BusinessObjects.Constants.RestApiDataStoreUrl, DevExpress.Xpo.DB.AutoCreateOption.SchemaAlreadyExists, "");
+                }
+                else
+                {
+                    this.LoginResult = response.Data;
                 }
             }
         }

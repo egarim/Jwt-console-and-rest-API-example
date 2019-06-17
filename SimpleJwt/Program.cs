@@ -18,7 +18,7 @@ namespace SimpleJwt
 
             //List of standard Payload claims https://en.wikipedia.org/wiki/JSON_Web_Token#Standard_fields
 
-            const string Issuer = "Jose Manuel Ojeda";
+            const string Issuer = "Jose Columbie";
 
             JwtPayload InitialPayload;
             InitialPayload = new JwtPayload {
